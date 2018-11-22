@@ -16,6 +16,14 @@ const styles = theme => ({
 });
 
 class App extends Component {
+  componentWillMount() {
+    let user = localStorage.getItem("user");
+    if (user)
+      this.updateAppState({ profile: { username: user }, isSignedIn: true });
+
+    this.props.history.push("/");
+  }
+
   updateAppState = props => {
     this.setState({
       ...this.state,
@@ -26,14 +34,17 @@ class App extends Component {
 
   signIn = user => {
     this.updateAppState({ ...user, isSignedIn: true });
+    localStorage.setItem("user", user.profile.username);
     this.props.history.push("/");
   };
 
   signOut = () => {
-    this.setState({
+    this.updateAppState({
       isSignedIn: false,
       profile: { id: "", username: "", displayname: "" }
     });
+    localStorage.removeItem("user");
+    this.props.history.push("/");
   };
 
   state = {
@@ -50,7 +61,7 @@ class App extends Component {
   };
 
   render() {
-    console.log("App rendered", this.state);
+    // console.log("App rendered", this.state);
     return (
       <UserContext.Provider value={this.state}>
         <div>

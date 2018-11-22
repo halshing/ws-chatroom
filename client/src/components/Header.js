@@ -66,6 +66,10 @@ class Header extends Component {
     this.handleGoTo(`/profile/${name}`);
   };
 
+  componentDidMount() {
+    // console.log(this.anchorEl)
+  }
+
   render() {
     return (
       <UserContext.Consumer>
@@ -74,7 +78,7 @@ class Header extends Component {
             <AppBar position="static">
               <Toolbar>
                 <Grid container spacing={24} justify="space-between">
-                  <Grid item>
+                  <Grid item style={{ visibility: props.isSignedIn ? "visible" : "hidden" }}>
                     <Button
                       color="inherit"
                       onClick={() => this.handleGoTo("/")}
@@ -101,7 +105,12 @@ class Header extends Component {
                         >
                           Hi, {props.profile.username}
                         </Button>
-                        <UserContextMenu {...this.state} {...props} goToProfile={this.goToProfile} closeUserContextMenu={this.closeUserContextMenu} />
+                        <UserContextMenu
+                          {...this.state}
+                          {...props}
+                          goToProfile={this.goToProfile}
+                          closeUserContextMenu={this.closeUserContextMenu}
+                        />
                       </div>
                     ) : (
                       <Button
